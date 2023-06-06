@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Chat {
+  _id: ID!
+  authorId: ID!
+  createdAt: String!
+  question: String!
+  answer: String!
+}
+
+type User {
+  _id: ID!
+  email: String!
+  password: String!
+}
+
+type Query {
+  user(email: String!): User!
+  chat(authorId: ID!): [Chat!]!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  createChat(input: CreateChatInput!): Chat!
+}
+
+input CreateUserInput {
+  """Email field ()"""
+  emailField: String!
+
+  """Password field ()"""
+  passwordField: String!
+}
+
+input CreateChatInput {
+  """User Id field ()"""
+  userIdField: ID!
+
+  """Question field ()"""
+  questionField: String!
+
+  """Answer field ()"""
+  answerField: String!
+}
