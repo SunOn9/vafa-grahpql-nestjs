@@ -3,6 +3,7 @@ import { CreateChatInput } from './dto/create-chat.input';
 import { MongoRepository  } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Chat} from './entities/chat.entity';
+import {ObjectId} from 'mongodb';
 
 @Injectable()
 export class ChatService {
@@ -11,16 +12,20 @@ export class ChatService {
     private userRepository: MongoRepository<Chat>,
     ) {}
 
-  create(input: CreateChatInput) : Promise<Chat> {
+  async create(input: CreateChatInput) : Promise<Chat> {
     const chat = new Chat();
     chat.question = input.questionField;
     chat.answer = input.answerField;
     chat.authorId = input.userIdField;
     chat.createdAt = Date.now().toString();
-    return this.userRepository.save(chat);
+    return await this.userRepository.save(chat);
   }
 
-  findAll(userId : number) : Promise<Chat[]>{
-    return this.userRepository.find({where: {authorId: userId}});
+  async findAll(userId : number) : Promise<Chat[]>{
+    return await this.userRepository.find({where: {authorId: userId}});
+  }
+
+  async getChats(userId : string) : Promise<Chat[]>{
+    return await this.userRepository.find({where: {authorId: userId}});
   }
 }

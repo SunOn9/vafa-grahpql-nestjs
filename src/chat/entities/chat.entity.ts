@@ -1,5 +1,6 @@
 import {Field, ID, ObjectType} from "@nestjs/graphql"
-import { Column, Entity, ObjectIdColumn,} from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, ManyToOne, ObjectIdColumn,} from "typeorm";
 
 @Entity()
 @ObjectType()
@@ -23,4 +24,8 @@ export class Chat{
     @Column()
     @Field()
     answer : string;
+
+    @ManyToOne(() => User, user => user.chats)
+    @Field(type => User)
+    author : User;
 }

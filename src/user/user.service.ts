@@ -1,8 +1,9 @@
 import { Injectable, Inject} from '@nestjs/common';
-import { MongoRepository, ObjectId  } from 'typeorm';
+import { MongoRepository  } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity'
 import { CreateUserInput } from './dto/create-user.input';
+import {ObjectId} from 'mongodb'
 
 @Injectable()
 export class UserService {
@@ -18,12 +19,12 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  findOne(email: string): Promise<User> {
-    return this.userRepository.findOne({where: {email: email}});
+  async findOne(email: string): Promise<User> {
+    return await this.userRepository.findOne({where: {email: email}});
   }
 
-  findById(id: number): Promise<User> {
-    return this.userRepository.findOne({where: {_id: id}});
+  async getUser(id : number): Promise<User> {
+    const objectId = new ObjectId(id)
+    return await this.userRepository.findOne({where: {_id: objectId}});
   }
-
 }
