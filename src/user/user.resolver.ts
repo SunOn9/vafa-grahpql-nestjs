@@ -1,10 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, ID } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { ChatService } from 'src/chat/chat.service';
-import { ObjectId } from 'mongodb';
 import { Chat } from 'src/chat/entities/chat.entity';
+import { CreateUserResponse } from './dto/create-user.response';
 
 @Resolver((of) => User)
 export class UserResolver {
@@ -13,16 +13,10 @@ export class UserResolver {
     private chatService: ChatService
   ) {}
 
-  @Mutation(() => User)
+  @Mutation(() => CreateUserResponse)
   async createUser(@Args('input') input: CreateUserInput) {
     return this.userService.create(input);
   }
-
-  @Query(() => User, { name: 'user' })
-  async findOne(@Args('email', { type: () => String}) email: string) {
-    return this.userService.findOne(email);
-  }
-
 
   @ResolveField(returns => [Chat])
   async chats(@Parent() user: User) : Promise<Chat[]>{

@@ -18,6 +18,14 @@ type Chat {
   author: User!
 }
 
+type CreateUserResponse {
+  """Success field ()"""
+  success: Boolean!
+
+  """ Message ()"""
+  message: String!
+}
+
 type LoginResponse {
   """Access Token  ()"""
   access_token: String
@@ -30,12 +38,11 @@ type LoginResponse {
 }
 
 type Query {
-  user(email: String!): User!
   chat: [Chat!]!
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User!
+  createUser(input: CreateUserInput!): CreateUserResponse!
   createChat(input: CreateChatInput!): Chat!
   login(loginUserInput: LoginUserInput!): LoginResponse!
 }
