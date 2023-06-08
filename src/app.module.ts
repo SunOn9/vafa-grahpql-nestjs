@@ -10,7 +10,7 @@ import { UserModule } from './user/user.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { User } from './user/entities/user.entity';
 import { Chat } from './chat/entities/chat.entity';
-
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -30,7 +30,8 @@ import { Chat } from './chat/entities/chat.entity';
       entities: [User, Chat],
     }),
     UserModule,
-    ChatModule  
+    ChatModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

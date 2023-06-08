@@ -1,9 +1,11 @@
-import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { ChatService } from './chat.service';
 import { Chat } from './entities/chat.entity';
 import { CreateChatInput } from './dto/create-chat.input';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Resolver((of) => Chat)
 export class ChatResolver {
@@ -13,13 +15,15 @@ export class ChatResolver {
   ) {}
 
   @Mutation(() => Chat)
-  async createChat(@Args('input') input: CreateChatInput) {
-    return await this.chatService.create(input);
+  @UseGuards(JwtAuthGuard)
+  async createChat(@Args('input') input: CreateChatInput, @Context() context) {
+    return await this.chatService.create(input, context.req.user._id);
   }
 
   @Query(() => [Chat], { name: 'chat' })
-  async findAll(@Args('authorId', { type: () => ID}) authorId: number) {
-    return await this.chatService.findAll(authorId);
+  @UseGuards(JwtAuthGuard)
+  async findAll(@Context() context) {
+    return await this.chatService.findAll(context.req.user._id);
   }
 
   @ResolveField(returns => User)

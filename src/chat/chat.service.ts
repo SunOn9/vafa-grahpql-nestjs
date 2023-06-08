@@ -12,11 +12,11 @@ export class ChatService {
     private userRepository: MongoRepository<Chat>,
     ) {}
 
-  async create(input: CreateChatInput) : Promise<Chat> {
+  async create(input: CreateChatInput, id : any) : Promise<Chat> {
     const chat = new Chat();
     chat.question = input.questionField;
     chat.answer = input.answerField;
-    chat.authorId = input.userIdField;
+    chat.authorId = id; // TODO: get this from context
     chat.createdAt = Date.now().toString();
     return await this.userRepository.save(chat);
   }

@@ -18,14 +18,26 @@ type Chat {
   author: User!
 }
 
+type LoginResponse {
+  """Access Token  ()"""
+  access_token: String
+
+  """ User ()"""
+  user: User
+
+  """ Error ()"""
+  error: String
+}
+
 type Query {
   user(email: String!): User!
-  chat(authorId: ID!): [Chat!]!
+  chat: [Chat!]!
 }
 
 type Mutation {
   createUser(input: CreateUserInput!): User!
   createChat(input: CreateChatInput!): Chat!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
 }
 
 input CreateUserInput {
@@ -37,12 +49,17 @@ input CreateUserInput {
 }
 
 input CreateChatInput {
-  """User Id field ()"""
-  userIdField: ID!
-
   """Question field ()"""
   questionField: String!
 
   """Answer field ()"""
   answerField: String!
+}
+
+input LoginUserInput {
+  """Email Field  ()"""
+  email: String!
+
+  """Password Field  ()"""
+  password: String!
 }
