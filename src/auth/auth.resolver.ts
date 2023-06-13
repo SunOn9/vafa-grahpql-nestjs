@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { LoginResponse } from './dto/login-response';
 import { LoginUserInput } from './dto/login-user.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from './gql-auth.guard';
+import { GqlAuthGuard } from './graphql/gql-auth.guard';
 
 @Resolver()
 export class AuthResolver {

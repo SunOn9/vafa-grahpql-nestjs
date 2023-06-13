@@ -16,7 +16,7 @@ export class ChatService {
     const chat = new Chat();
     chat.question = input.questionField;
     chat.answer = input.answerField;
-    chat.authorId = id; // TODO: get this from context
+    chat.authorId = id; 
     chat.createdAt = Date.now().toString();
     return await this.userRepository.save(chat);
   }

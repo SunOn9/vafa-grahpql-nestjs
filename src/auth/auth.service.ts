@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import { LoginUserInput } from './dto/login-user.input';
 import { JwtService } from '@nestjs/jwt'
 import { User } from 'src/user/entities/user.entity';
 import * as bcrypt from 'bcrypt'
@@ -13,13 +12,17 @@ export class AuthService {
     
     async validateUser(email: string, password: string) : Promise<any> {
         const user = await this.userService.findOne(email);
+        
+        if (!user.activated){
+            return {error : "Account not activated yet! Please check your email and try again!"};
+        }
 
         const valid = await bcrypt.compare(password, user.password);
 
         if (!user){
             return {error : "Email address is not associated with any account"}
         } else if (valid) { 
-            const {password, chats , ...result} = user;
+            const {password, activated, ...result} = user;
             return result;
         } else {
             return {error : "Wrong password"}

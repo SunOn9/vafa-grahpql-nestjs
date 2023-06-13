@@ -2,20 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  _id: ID!
-  email: String!
-  password: String!
-  chats: [Chat!]
-}
-
 type Chat {
   _id: ID!
   authorId: ID!
   createdAt: String!
   question: String!
   answer: String!
-  author: User!
+}
+
+type User {
+  _id: ID!
+  email: String!
+  password: String!
+  activated: Boolean!
 }
 
 type CreateUserResponse {
@@ -24,6 +23,14 @@ type CreateUserResponse {
 
   """ Message ()"""
   message: String!
+}
+
+type ActivateUserResponse {
+  """Success field ()"""
+  success: Boolean!
+
+  """ Message ()"""
+  error: Boolean!
 }
 
 type LoginResponse {
@@ -43,6 +50,9 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput!): CreateUserResponse!
+  activateUser(input: String!): ActivateUserResponse!
+  changePassword(input: ChangePasswordInput!): Boolean!
+  sendMailResetPassword(input: ResetPasswordInput!): Boolean!
   createChat(input: CreateChatInput!): Chat!
   login(loginUserInput: LoginUserInput!): LoginResponse!
 }
@@ -53,6 +63,22 @@ input CreateUserInput {
 
   """Password field ()"""
   passwordField: String!
+}
+
+input ChangePasswordInput {
+  """Id field ()"""
+  id: String!
+
+  """Old password field ()"""
+  oldPassword: String!
+
+  """Password field ()"""
+  password: String!
+}
+
+input ResetPasswordInput {
+  """Email field ()"""
+  email: String!
 }
 
 input CreateChatInput {

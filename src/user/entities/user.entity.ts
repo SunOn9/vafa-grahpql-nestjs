@@ -17,7 +17,8 @@ export class User{
     @Field()
     password : string;
 
-    @OneToMany(() => Chat, chat => chat.author)
-    @Field(type => [Chat], {nullable: true})
-    chats?: Chat[]
+    @Column()
+    @Field(type => Boolean)
+    activated : boolean = false;
+
 }    

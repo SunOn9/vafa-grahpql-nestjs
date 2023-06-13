@@ -5,7 +5,7 @@ import { CreateChatInput } from './dto/create-chat.input';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
 @Resolver((of) => Chat)
 export class ChatResolver {
@@ -26,9 +26,5 @@ export class ChatResolver {
     return await this.chatService.findAll(context.req.user._id);
   }
 
-  @ResolveField(returns => User)
-  async author(@Parent() chat: Chat) : Promise<User> {
-    return await this.userService.getUser(chat.authorId);
-  }
 }
  

@@ -25,7 +25,4 @@ export class Chat{
     @Field()
     answer : string;
 
-    @ManyToOne(() => User, user => user.chats)
-    @Field(type => User)
-    author : User;
 }
