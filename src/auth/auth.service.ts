@@ -12,20 +12,20 @@ export class AuthService {
     
     async validateUser(email: string, password: string) : Promise<any> {
         const user = await this.userService.findOne(email);
-        
-        if (!user.activated){
-            return {error : "Account not activated yet! Please check your email and try again!"};
-        }
-
-        const valid = await bcrypt.compare(password, user.password);
 
         if (!user){
             return {error : "Email address is not associated with any account"}
-        } else if (valid) { 
-            const {password, activated, ...result} = user;
-            return result;
+        } else if (!user.activated){
+            return {error : "Account not activated yet! Please check your email and try again!"};
         } else {
-            return {error : "Wrong password"}
+            const valid = await bcrypt.compare(password, user.password);
+
+            if (valid) { 
+                const {password, activated, ...result} = user;
+                return result;
+            } else {
+                return {error : "Wrong password"}
+            }
         }
     }
 
@@ -34,8 +34,7 @@ export class AuthService {
             access_token: this.jwtService.sign({
                 username: user.email,
                 sub: user._id.toString()
-            }),
-            user,
+            })
         }
     }
 }

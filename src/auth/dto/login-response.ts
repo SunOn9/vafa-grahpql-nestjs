@@ -6,9 +6,6 @@ export class LoginResponse {
     @Field(() => String, { description: 'Access Token  ()', nullable: true })    
     access_token?: string;
 
-    @Field(() => User, { description: ' User ()', nullable: true})
-    user?: User;
-
     @Field(() => String, { description: ' Error ()', nullable: true})
     error?: string;
 }
